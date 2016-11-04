@@ -26,7 +26,6 @@ import org.openjdk.jmh.annotations.{ Benchmark, State, Scope, Setup, Param }
 class MemoizationBenchmark {
 
   @Param(Array("10", "100", "1000", "10000", "100000", "1000000"))
-  //, "1000000000"))
   var start: Int = _
 
   @Benchmark

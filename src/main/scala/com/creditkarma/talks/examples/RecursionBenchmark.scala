@@ -41,97 +41,116 @@ class RecursionBenchmark {
 
   @Benchmark
   def calculateByRecursionBenchInt(): Int =
-    calculateByRecursion[Int](start)
+    calculateByRecursionBenchIntHelper(start)
 
+  def calculateByRecursionBenchIntHelper(n: Int): Int = {
+    if (1 == n) 1
+    else n * calculateByRecursionBenchIntHelper(n - 1)
+  }
+  
   @Benchmark
   def calculateByRecursionBenchLong(): Long =
-    calculateByRecursion[Long](start)
+    calculateByRecursionBenchLongHelper(start)
 
+  def calculateByRecursionBenchLongHelper(n: Long): Long = {
+    if (1l == n) 1l
+    else n * calculateByRecursionBenchLongHelper(n - 1l)
+  }
+  
   @Benchmark
   def calculateByRecursionBenchBigInt(): BigInt =
-    calculateByRecursion[BigInt](start)
+    calculateByRecursionBenchBigIntHelper(start)
 
+  def calculateByRecursionBenchBigIntHelper(n: BigInt): BigInt = {
+    if (BigInt(1) == n) BigInt(1)
+    else n * calculateByRecursionBenchBigIntHelper(n - BigInt(1))
+  }
+  
   @Benchmark
   def calculateByRecursionBenchDouble(): Double =
-    calculateByRecursion[Double](start)
+    calculateByRecursionBenchDoubleHelper(start)
 
-  def calculateByRecursion[T](n: T)(implicit x: Numeric[T]): T = {
-    import x._
-    if (1 == n) 1.asInstanceOf[T]
-    else n * calculateByRecursion(n - 1.asInstanceOf[T])
+  def calculateByRecursionBenchDoubleHelper(n: Double): Double = {
+    if (1.0 == n) 1.0
+    else n * calculateByRecursionBenchDoubleHelper(n - 1.0)
   }
+  
+  @Benchmark
+  def calculateByLoopBenchInt(): Int = calculateByLoop[Int](start, 1)
 
   @Benchmark
-  def calculateByLoopBenchInt(): Int = calculateByLoop[Int](start)
+  def calculateByLoopBenchLong(): Long = calculateByLoop[Long](start, 1l)
 
   @Benchmark
-  def calculateByLoopBenchLong(): Long = calculateByLoop[Long](start)
+  def calculateByLoopBenchBigInt(): BigInt =
+    calculateByLoop[BigInt](start, BigInt(1))
 
   @Benchmark
-  def calculateByLoopBenchBigInt(): BigInt = calculateByLoop[BigInt](start)
+  def calculateByLoopBenchDouble(): Double = calculateByLoop[Double](start, 1.0)
 
-  @Benchmark
-  def calculateByLoopBenchDouble(): Double = calculateByLoop[Double](start)
-
-  def calculateByLoop[T](n: T)(implicit x: Numeric[T]): T = {
+  def calculateByLoop[T](n: T, oneV: T)(implicit x: Numeric[T]): T = {
     import x._
-    var res: T = 1.asInstanceOf[T]
-    var i: Int = 2
-    while (i <= n.asInstanceOf[Int]) {
-      res *= i.asInstanceOf[T]
-      i = i + 1
+    var res: T = oneV
+    var i: T = oneV + oneV
+    while (i <= n) {
+      res *= i
+      i = i + oneV
     }
     res
   }
 
   @Benchmark
-  def calculateByForComprehensionBenchInt(): Int =
-    calculateByForComprehension[Int](start)
+  def calculateByForComprehensionBenchInt(): Int = {
+    var res: Int = 1
+    for (i <- 2 to start) res = i * res
+    res
+  }
 
   @Benchmark
-  def calculateByForComprehensionBenchLong(): Long =
-    calculateByForComprehension[Long](start)
+  def calculateByForComprehensionBenchLong(): Long = {
+    var res: Long = 1
+    for (i <- 2 to start) res = i.toLong * res
+    res
+  }
 
   @Benchmark
-  def calculateByForComprehensionBenchBigInt(): BigInt =
-    calculateByForComprehension[BigInt](start)
+  def calculateByForComprehensionBenchBigInt(): BigInt = {
+    var res: BigInt = BigInt(1)
+    for (i <- 2 to start) res = BigInt(i) * res
+    res
+  }
 
   @Benchmark
-  def calculateByForComprehensionBenchDouble(): Double =
-    calculateByForComprehension[Double](start)
-
-  def calculateByForComprehension[T](n: T)(implicit x: Numeric[T]): T = {
-    import x._
-    var res: T = 1.asInstanceOf[T]
-    for (i <- 2 to n.asInstanceOf[Int])
-      res = i.asInstanceOf[T] * res
+  def calculateByForComprehensionBenchDouble(): Double = {
+    var res: Double = 1.0
+    for (i <- 2 to start) res = i.toDouble * res
     res
   }
 
   @Benchmark
   def calculateByTailRecursionBenchInt(): Int =
-    calculateByTailRecursion[Int](start)
+    calculateByTailRecursion[Int](start, 1)
 
   @Benchmark
   def calculateByTailRecursionBenchLong(): Long =
-    calculateByTailRecursion[Long](start)
+    calculateByTailRecursion[Long](start, 1l)
 
   @Benchmark
   def calculateByTailRecursionBenchBigInt(): BigInt =
-    calculateByTailRecursion[BigInt](start)
+    calculateByTailRecursion[BigInt](start, BigInt(1))
 
   @Benchmark
   def calculateByTailRecursionBenchDouble(): Double =
-    calculateByTailRecursion[Double](start)
+    calculateByTailRecursion[Double](start, 1.0)
 
-  def calculateByTailRecursion[T](n: T)(implicit x: Numeric[T]): T = {
+  def calculateByTailRecursion[T](n: T, oneV: T)(implicit x: Numeric[T]): T = {
     import x._
 
     @tailrec def fac(n: T, acc: T): T = {
-      if (1.asInstanceOf[T] == n) acc
-      else fac(n - 1.asInstanceOf[T], n * acc)
+      if (oneV == n) acc
+      else fac(n - oneV, n * acc)
     }
 
-    fac(n, 1.asInstanceOf[T])
+    fac(n, oneV)
   }
 }
