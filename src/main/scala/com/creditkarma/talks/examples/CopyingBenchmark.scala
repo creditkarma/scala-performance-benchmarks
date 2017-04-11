@@ -59,6 +59,189 @@ object CopyingBenchmark {
     arg13: String, arg14: String, arg15: String, arg16: String)
 
   @State(Scope.Benchmark)
+  class SmallAccessSetup {
+
+    var small: Small = Small(0l, 0l, 0l, 0l)
+
+    def testSynchronizationSmallLong(bh: Blackhole): Unit = synchronized {
+      bh.consume(small.arg1)
+      bh.consume(small.arg2)
+      bh.consume(small.arg3)
+      bh.consume(small.arg4)
+    }
+    
+    @Setup(Level.Invocation)
+    def init: Unit = {
+    
+      small = Small(
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong())
+    }
+  }
+
+  @State(Scope.Benchmark)
+  class SmallStringAccessSetup {
+
+    var small: SmallStrings = SmallStrings("", "")
+
+    def testSynchronizationSmallString(bh: Blackhole): Unit = synchronized {
+      bh.consume(small.arg1)
+      bh.consume(small.arg2)
+    }
+    
+    @Setup(Level.Invocation)
+    def init: Unit = {
+    
+      small = SmallStrings(
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)))
+    }
+  }
+
+  @State(Scope.Benchmark)
+  class MediumAccessSetup {
+
+    var medium: Medium = Medium(0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l)
+
+    def testSynchronizationMediumLong(bh: Blackhole): Unit = synchronized {
+      bh.consume(medium.arg1)
+      bh.consume(medium.arg2)
+      bh.consume(medium.arg3)
+      bh.consume(medium.arg4)
+      bh.consume(medium.arg5)
+      bh.consume(medium.arg6)
+      bh.consume(medium.arg7)
+      bh.consume(medium.arg8)
+    }
+    
+    @Setup(Level.Invocation)
+    def init: Unit = {
+    
+      medium = Medium(
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong(), random.nextLong())
+    }
+  }
+
+  @State(Scope.Benchmark)
+  class MediumStringAccessSetup {
+
+    var medium: MediumStrings = MediumStrings("", "", "", "", "", "", "", "")
+
+    def testSynchronizationMediumString(bh: Blackhole): Unit = synchronized {
+      bh.consume(medium.arg1)
+      bh.consume(medium.arg2)
+      bh.consume(medium.arg3)
+      bh.consume(medium.arg4)
+      bh.consume(medium.arg5)
+      bh.consume(medium.arg6)
+      bh.consume(medium.arg7)
+      bh.consume(medium.arg8)
+    }
+    
+    @Setup(Level.Invocation)
+    def init: Unit = {
+    
+      medium = MediumStrings(
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)))
+    }
+  }
+
+  @State(Scope.Benchmark)
+  class LargeAccessSetup {
+
+    var large: Large = Large(
+      0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l, 0l)
+
+    def testSynchronizationLargeLong(bh: Blackhole): Unit = synchronized {
+      bh.consume(large.arg1)
+      bh.consume(large.arg2)
+      bh.consume(large.arg3)
+      bh.consume(large.arg4)
+      bh.consume(large.arg5)
+      bh.consume(large.arg6)
+      bh.consume(large.arg7)
+      bh.consume(large.arg8)
+      bh.consume(large.arg9)
+      bh.consume(large.arg10)
+      bh.consume(large.arg11)
+      bh.consume(large.arg12)
+      bh.consume(large.arg13)
+      bh.consume(large.arg14)
+      bh.consume(large.arg15)
+      bh.consume(large.arg16)
+    }
+    
+    @Setup(Level.Invocation)
+    def init: Unit = {
+    
+      large = Large(
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong(), random.nextLong(), random.nextLong(),
+        random.nextLong())
+    }
+  }
+
+  @State(Scope.Benchmark)
+  class LargeStringAccessSetup {
+
+    var large: LargeStrings = LargeStrings(
+      "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+
+    def testSynchronizationLargeString(bh: Blackhole): Unit = synchronized {
+      bh.consume(large.arg1)
+      bh.consume(large.arg2)
+      bh.consume(large.arg3)
+      bh.consume(large.arg4)
+      bh.consume(large.arg5)
+      bh.consume(large.arg6)
+      bh.consume(large.arg7)
+      bh.consume(large.arg8)
+      bh.consume(large.arg9)
+      bh.consume(large.arg10)
+      bh.consume(large.arg11)
+      bh.consume(large.arg12)
+      bh.consume(large.arg13)
+      bh.consume(large.arg14)
+      bh.consume(large.arg15)
+      bh.consume(large.arg16)
+    }
+    
+    @Setup(Level.Invocation)
+    def init: Unit = {
+    
+      large = LargeStrings(
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)),
+        random.nextString(random.nextInt(16)))
+    }
+  }
+
+  @State(Scope.Benchmark)
   class CopyingSetup {
 
     def makeSmall(args: Array[Long]): Small =
@@ -89,7 +272,6 @@ object CopyingBenchmark {
         args(5), args(6), args(7), args(8), args(9),
         args(10), args(11), args(12), args(13), args(14), args(15))
 
-
     val listOfLongs: Array[Long] = new Array[Long](4096)
     val listOfStrings: Array[String] = new Array[String](4096)
 
@@ -107,6 +289,36 @@ object CopyingBenchmark {
 class CopyingBenchmark {
 
   import CopyingBenchmark._
+
+  @Benchmark
+  def testSynchronizationSmallLong(
+    setup: SmallAccessSetup, bh: Blackhole): Unit =
+    setup.testSynchronizationSmallLong(bh)
+
+  @Benchmark
+  def testSynchronizationSmallString(
+    setup: SmallStringAccessSetup, bh: Blackhole): Unit = 
+    setup.testSynchronizationSmallString(bh)
+
+  @Benchmark
+  def testSynchronizationMediumLong(
+    setup: MediumAccessSetup, bh: Blackhole): Unit = 
+    setup.testSynchronizationMediumLong(bh)
+
+  @Benchmark
+  def testSynchronizationMediumString(
+    setup: MediumStringAccessSetup, bh: Blackhole): Unit = 
+    setup.testSynchronizationMediumString(bh)
+
+  @Benchmark
+  def testSynchronizationLargeLong(
+    setup: LargeAccessSetup, bh: Blackhole): Unit =
+    setup.testSynchronizationLargeLong(bh)
+
+  @Benchmark
+  def testSynchronizationLargeString(
+    setup: LargeStringAccessSetup, bh: Blackhole): Unit = 
+    setup.testSynchronizationLargeString(bh)
 
   @Benchmark
   def testCopyingSmallLong(setup: CopyingSetup, bh: Blackhole): Unit = {
@@ -150,3 +362,4 @@ class CopyingBenchmark {
     bh.consume(setup.makeLargeStrings(setup.listOfStrings.slice(idx, idx + 16)))
   }
 }
+
