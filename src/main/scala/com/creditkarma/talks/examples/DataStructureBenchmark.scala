@@ -243,7 +243,7 @@ class DataStructureBenchmark {
       if (input.arr(i) == input.item) return i
       i = i + 1
     }
-    return -1
+    -1
   }
 
   def findItemInArrayWithFind[T](input: RandomArray[T]): Int =
@@ -284,7 +284,7 @@ class DataStructureBenchmark {
       if (input.seq(i) == input.item) return i
       i = i + 1
     }
-    return -1
+    -1
   }
 
   def findItemInSeqWithFind[T](input: RandomSeq[T]): Int = 
