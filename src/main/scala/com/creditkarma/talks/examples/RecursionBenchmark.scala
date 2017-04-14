@@ -20,11 +20,11 @@ package com.creditkarma.talks.examples
 
 import scala.annotation.tailrec
 import scala.math.Numeric
+import scala.collection.immutable.NumericRange.Inclusive
 
 import org.openjdk.jmh.annotations.{
   Benchmark, State, Scope, Setup, Level, Param
 }
-
 
 object RecursionBenchmark {
 
@@ -152,5 +152,28 @@ class RecursionBenchmark {
     }
 
     fac(n, oneV)
+  }
+
+  @Benchmark
+  def calculateByFoldleftBenchInt(): Int =
+    calculateByFoldleft[Int](start)
+
+  @Benchmark
+  def calculateByFoldleftBenchLong(): Long =
+    calculateByFoldleft[Long](start)
+
+  @Benchmark
+  def calculateByFoldleftBenchBigInt(): BigInt =
+    calculateByFoldleft[BigInt](start)
+
+  @Benchmark
+  def calculateByFoldleftBenchDouble(): Double = {
+    implicit val num = Numeric.DoubleAsIfIntegral
+    calculateByFoldleft[Double](start)
+  }
+
+  def calculateByFoldleft[T](n: T)(implicit num: math.Integral[T]): T = {
+    import num._
+    (new Inclusive[T](plus(one, one), n, one)).foldLeft(one)(_*_)
   }
 }

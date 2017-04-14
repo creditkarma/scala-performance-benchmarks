@@ -125,15 +125,15 @@ object MutableBenchmark {
     @Param(Array("16", "256", "4096"))
     var containerSize: Int = _
 
-    var data: scala.collection.immutable.Seq[Long] =
-      scala.collection.immutable.Seq[Long]()
+    var data: scala.collection.immutable.IndexedSeq[Long] =
+      scala.collection.immutable.IndexedSeq[Long]()
     var value: Long = 0l
     var toRead: Int = 0
 
     @Setup(Level.Iteration)
     def initAll: Unit = {
 
-      data = scala.collection.immutable.Seq[Long]()
+      data = scala.collection.immutable.IndexedSeq[Long]()
       for (i <- 0 until containerSize)
         data = data :+ random.nextLong()
       toRead = random.nextInt(containerSize)
@@ -242,3 +242,4 @@ class MutableBenchmark {
   def removeImmutableMap(input: ImmutableMapValue): Unit =
     input.data = input.data - input.key
 }
+

@@ -54,6 +54,18 @@ THE POSSIBILITY OF SUCH DAMAGE.
             <artifactId>scala-library</artifactId>
             <version>${scala.stdLib.version}</version>
         </dependency>
+        <dependency>
+          <groupId>org.json4s</groupId>
+          <artifactId>json4s-native_${scala.version}</artifactId>
+          <version>3.3.0</version>
+<!--          <version>3.5.1</version>-->
+        </dependency>
+        <dependency>
+          <groupId>org.json4s</groupId>
+          <artifactId>json4s-jackson_${scala.version}</artifactId>
+          <version>3.3.0</version>
+<!--          <version>3.5.1</version>-->
+        </dependency>
     </dependencies>
 
     <prerequisites>
@@ -78,7 +90,10 @@ THE POSSIBILITY OF SUCH DAMAGE.
             Available versions are listed here:
                https://mvnrepository.com/artifact/org.scala-lang/scala-library
         -->
-        <scala.stdLib.version>2.11.8</scala.stdLib.version>
+        <scala.stdLib.version>2.11.8</scala.stdLib.version> 
+        <scala.version>2.11</scala.version>
+<!--        <scala.stdLib.version>2.12.1</scala.stdLib.version>
+        <scala.version>2.12</scala.version> -->
 
         <!--
             Put an appropriate Scala Maven plugin version here.

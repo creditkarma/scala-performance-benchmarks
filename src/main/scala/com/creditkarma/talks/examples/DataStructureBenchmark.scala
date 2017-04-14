@@ -324,7 +324,7 @@ class DataStructureBenchmark {
       if (input.seq(i) == input.item) return i
       i = i + 1
     }
-    return -1
+    -1
   }
 
   def findItemInIndexedSeqWithFind[T](input: RandomIndexedSeq[T]): Int = 
@@ -374,3 +374,4 @@ class DataStructureBenchmark {
   def findItemInMapDouble(input: RandomDoubleMap): Double =
     findItemInMap[Double](input)
 }
+
