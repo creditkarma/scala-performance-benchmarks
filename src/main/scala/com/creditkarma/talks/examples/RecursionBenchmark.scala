@@ -76,25 +76,45 @@ class RecursionBenchmark {
   }
   
   @Benchmark
-  def calculateByLoopBenchInt(): Int = calculateByLoop[Int](start, 1)
-
-  @Benchmark
-  def calculateByLoopBenchLong(): Long = calculateByLoop[Long](start, 1l)
-
-  @Benchmark
-  def calculateByLoopBenchBigInt(): BigInt =
-    calculateByLoop[BigInt](start, BigInt(1))
-
-  @Benchmark
-  def calculateByLoopBenchDouble(): Double = calculateByLoop[Double](start, 1.0)
-
-  def calculateByLoop[T](n: T, oneV: T)(implicit x: Numeric[T]): T = {
-    import x._
-    var res: T = oneV
-    var i: T = oneV + oneV
-    while (i <= n) {
+  def calculateByLoopBenchInt(): Int = {
+    var res: Int = 1
+    var i: Int = 2
+    while (i <= start) {
       res *= i
-      i = i + oneV
+      i = i + 1
+    }
+    res
+  }
+
+  @Benchmark
+  def calculateByLoopBenchLong(): Long = {
+    var res: Long = 1l
+    var i: Long = 2l
+    while (i <= start.toLong) {
+      res *= i
+      i = i + 1l
+    }
+    res
+  }
+
+  @Benchmark
+  def calculateByLoopBenchBigInt(): BigInt = {
+    var res: BigInt = BigInt(1)
+    var i: Int = 2
+    while (i <= start) {
+      res *= BigInt(i)
+      i = i + 1
+    }
+    res
+  }
+
+  @Benchmark
+  def calculateByLoopBenchDouble(): Double = {
+    var res: Double = 1.0
+    var i: Int = 2
+    while (i <= start) {
+      res *= i.toDouble
+      i = i + 1
     }
     res
   }
@@ -102,78 +122,71 @@ class RecursionBenchmark {
   @Benchmark
   def calculateByForComprehensionBenchInt(): Int = {
     var res: Int = 1
-    for (i <- 2 to start) res = i * res
+    for (i <- 2 until start) res = i * res
     res
   }
 
   @Benchmark
   def calculateByForComprehensionBenchLong(): Long = {
     var res: Long = 1
-    for (i <- 2 to start) res = i.toLong * res
+    for (i <- 2 until start) res = i.toLong * res
     res
   }
 
   @Benchmark
   def calculateByForComprehensionBenchBigInt(): BigInt = {
     var res: BigInt = BigInt(1)
-    for (i <- 2 to start) res = BigInt(i) * res
+    for (i <- 2 until start) res = BigInt(i) * res
     res
   }
 
   @Benchmark
   def calculateByForComprehensionBenchDouble(): Double = {
     var res: Double = 1.0
-    for (i <- 2 to start) res = i.toDouble * res
+    for (i <- 2 until start) res = i.toDouble * res
     res
   }
 
   @Benchmark
   def calculateByTailRecursionBenchInt(): Int =
-    calculateByTailRecursion[Int](start, 1)
+    calculateByTailRecursion[Int](start)
 
   @Benchmark
   def calculateByTailRecursionBenchLong(): Long =
-    calculateByTailRecursion[Long](start, 1l)
+    calculateByTailRecursion[Long](start)
 
   @Benchmark
   def calculateByTailRecursionBenchBigInt(): BigInt =
-    calculateByTailRecursion[BigInt](start, BigInt(1))
+    calculateByTailRecursion[BigInt](start)
 
   @Benchmark
   def calculateByTailRecursionBenchDouble(): Double =
-    calculateByTailRecursion[Double](start, 1.0)
+    calculateByTailRecursion[Double](start)
 
-  def calculateByTailRecursion[T](n: T, oneV: T)(implicit x: Numeric[T]): T = {
+  def calculateByTailRecursion[T](n: T)(implicit x: Numeric[T]): T = {
     import x._
 
     @tailrec def fac(n: T, acc: T): T = {
-      if (oneV == n) acc
-      else fac(n - oneV, n * acc)
+      if (one == n) acc
+      else fac(n - one, n * acc)
     }
 
-    fac(n, oneV)
+    fac(n, one)
   }
 
   @Benchmark
   def calculateByFoldleftBenchInt(): Int =
-    calculateByFoldleft[Int](start)
+    (2 until start).foldLeft(1)(_*_)
 
   @Benchmark
   def calculateByFoldleftBenchLong(): Long =
-    calculateByFoldleft[Long](start)
+    (2l until start.toLong).foldLeft(1l)(_*_)
 
   @Benchmark
   def calculateByFoldleftBenchBigInt(): BigInt =
-    calculateByFoldleft[BigInt](start)
+    (2 until start).map { BigInt(_) }.foldLeft(BigInt(1))(_*_)
 
   @Benchmark
-  def calculateByFoldleftBenchDouble(): Double = {
-    implicit val num = Numeric.DoubleAsIfIntegral
-    calculateByFoldleft[Double](start)
-  }
-
-  def calculateByFoldleft[T](n: T)(implicit num: math.Integral[T]): T = {
-    import num._
-    (new Inclusive[T](plus(one, one), n, one)).foldLeft(one)(_*_)
-  }
+  def calculateByFoldleftBenchDouble(): Double =
+    (2 until start).map { _.toDouble }.foldLeft(1.0)(_*_)
 }
