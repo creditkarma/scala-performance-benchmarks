@@ -148,30 +148,44 @@ class RecursionBenchmark {
   }
 
   @Benchmark
-  def calculateByTailRecursionBenchInt(): Int =
-    calculateByTailRecursion[Int](start)
-
-  @Benchmark
-  def calculateByTailRecursionBenchLong(): Long =
-    calculateByTailRecursion[Long](start)
-
-  @Benchmark
-  def calculateByTailRecursionBenchBigInt(): BigInt =
-    calculateByTailRecursion[BigInt](start)
-
-  @Benchmark
-  def calculateByTailRecursionBenchDouble(): Double =
-    calculateByTailRecursion[Double](start)
-
-  def calculateByTailRecursion[T](n: T)(implicit x: Numeric[T]): T = {
-    import x._
-
-    @tailrec def fac(n: T, acc: T): T = {
-      if (one == n) acc
-      else fac(n - one, n * acc)
+  def calculateByTailRecursionBenchInt(): Int = {
+    @tailrec def fac(res: Int, i: Int): Int = {
+      if (i <= start) fac(res * i, i + 1)
+      else res
     }
 
-    fac(n, one)
+    fac(1, 2)
+  }
+
+  @Benchmark
+  def calculateByTailRecursionBenchLong(): Long = {
+    val startL = start.toLong
+    @tailrec def fac(res: Long, i: Long): Long = {
+      if (i <= startL) fac(res * i, i + 1l)
+      else res
+    }
+
+    fac(1l, 2l)
+  }
+
+  @Benchmark
+  def calculateByTailRecursionBenchBigInt(): BigInt = {
+    @tailrec def fac(res: BigInt, i: Int): BigInt = {
+      if (i <= start) fac(res * BigInt(i), i + 1)
+      else res
+    }
+
+    fac(BigInt(1), 2)
+  }
+
+  @Benchmark
+  def calculateByTailRecursionBenchDouble(): Double = {
+    @tailrec def fac(res: Double, i: Int): Double = {
+      if (i <= start) fac(res * i.toDouble, i + 1)
+      else res
+    }
+
+    fac(1.0D, 2)
   }
 
   @Benchmark
